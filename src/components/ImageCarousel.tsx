@@ -4,9 +4,6 @@ import { useState, useEffect, useCallback } from "react";
 import { Mountain } from "lucide-react";
 import Image from "next/image";
 
-const IMAGE_WIDTH = 3240;
-const IMAGE_HEIGHT = 4050;
-
 // Import all images from assets
 import img0 from "@/assets/images/Untitled.png";
 import img1 from "@/assets/images/Untitled1.png";
@@ -129,20 +126,21 @@ export function ImageCarousel() {
   }, [goToNext]);
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl sm:col-span-2 lg:col-span-2 lg:row-span-2">
-      <div className="relative h-full min-h-[300px] sm:min-h-[400px]">
+    <div className="bg-white/95 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+      {/* Container with 4:5 aspect ratio (matching photo dimensions 3240x4050) */}
+      <div className="relative aspect-[4/5]">
         <Image
           src={images[currentIndex]}
           alt={`Vista del despegue Cerro ARCO - Imagen ${currentIndex + 1}`}
-          width={IMAGE_WIDTH}
-          height={IMAGE_HEIGHT}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
           priority={currentIndex === 0}
+          sizes="(max-width: 1024px) 100vw, 40vw"
         />
 
         {/* Overlay Text */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-5">
+          <div className="flex items-center gap-2 mb-1">
             <Mountain className="w-5 h-5 text-white" />
             <span className="text-white font-semibold">Cerro ARCO</span>
           </div>

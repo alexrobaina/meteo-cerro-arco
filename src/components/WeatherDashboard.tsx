@@ -116,110 +116,122 @@ export function WeatherDashboard() {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
         {/* Station Header */}
-        <div className="text-center mb-2">
+        <div className="text-center mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg">
             {weatherData?.station || "Estación Meteorológica Cerro ARCO"}
           </h1>
           <div className="h-1 w-24 bg-blue-400 mx-auto rounded-full" />
+          {lastUpdate && (
+            <p className="text-white/70 text-sm mt-4">
+              Última actualización: {lastUpdate.toLocaleTimeString("es-AR")}
+            </p>
+          )}
         </div>
 
-        {/* Weather Metrics Grid */}
-        <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {/* Takeoff Photo Carousel - Spans 2 columns on larger screens */}
-          <ImageCarousel />
-
-          {/* Wind Gusts Card */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-cyan-100 rounded-xl">
-                <CloudRain className="w-6 h-6 text-cyan-600" />
-              </div>
-              <span className="text-sm font-medium text-gray-500">
-                Ráfagas (últ. 10min)
-              </span>
-            </div>
-            <div className="text-4xl font-bold text-gray-900 mb-1">
-              {windGusts}
-            </div>
-            <div className="text-sm text-gray-600">km/h</div>
+        {/* Main Layout: Carousel + Cards */}
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-6">
+          {/* Takeoff Photo Carousel - Left side with 4:5 aspect ratio */}
+          <div className="lg:w-2/5">
+            <ImageCarousel />
           </div>
 
-          {/* Wind Direction Card */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-purple-100 rounded-xl">
-                <Compass className="w-6 h-6 text-purple-600" />
+          {/* Weather Cards Grid - Right side, 2 columns, stretch to fill height */}
+          <div className="lg:w-3/5 grid grid-cols-2 gap-4 grid-rows-3">
+            {/* Wind Speed Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl flex flex-col justify-center">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <Wind className="w-6 h-6 text-blue-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-500">
+                  Viento
+                </span>
               </div>
-              <span className="text-sm font-medium text-gray-500">
-                Dirección del viento
-              </span>
+              <div className="text-4xl font-bold text-gray-900">
+                {windSpeed}
+              </div>
+              <div className="text-sm text-gray-600">km/h</div>
             </div>
-            <div className="text-4xl font-bold text-gray-900 mb-1">
-              {windDirection}
-            </div>
-            <div className="text-sm text-gray-600">
-              {weatherData?.winddir !== undefined
-                ? `${weatherData.winddir}°`
-                : ""}
-            </div>
-          </div>
 
-          {/* Humidity Card */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-teal-100 rounded-xl">
-                <Droplets className="w-6 h-6 text-teal-600" />
+            {/* Wind Gusts Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl flex flex-col justify-center">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 bg-cyan-100 rounded-xl">
+                  <CloudRain className="w-6 h-6 text-cyan-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-500">
+                  Ráfagas
+                </span>
               </div>
-              <span className="text-sm font-medium text-gray-500">Humedad</span>
+              <div className="text-4xl font-bold text-gray-900">
+                {windGusts}
+              </div>
+              <div className="text-sm text-gray-600">km/h</div>
             </div>
-            <div className="text-4xl font-bold text-gray-900 mb-1">
-              {humidity}%
-            </div>
-          </div>
 
-          {/* Pressure Card */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-indigo-100 rounded-xl">
-                <Gauge className="w-6 h-6 text-indigo-600" />
+            {/* Wind Direction Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl flex flex-col justify-center">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 bg-purple-100 rounded-xl">
+                  <Compass className="w-6 h-6 text-purple-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-500">
+                  Dirección
+                </span>
               </div>
-              <span className="text-sm font-medium text-gray-500">Presión</span>
+              <div className="text-4xl font-bold text-gray-900">
+                {windDirection}
+              </div>
+              <div className="text-sm text-gray-600">
+                {weatherData?.winddir !== undefined
+                  ? `${weatherData.winddir}°`
+                  : ""}
+              </div>
             </div>
-            <div className="text-4xl font-bold text-gray-900 mb-1">
-              {pressure}
-            </div>
-            <div className="text-sm text-gray-600">hPa</div>
-          </div>
 
-          {/* Temperature Card */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl sm:col-span-2 lg:col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-orange-100 rounded-xl">
-                <Thermometer className="w-6 h-6 text-orange-600" />
+            {/* Temperature Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <Thermometer className="w-6 h-6 text-orange-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-500">
+                  Temperatura
+                </span>
               </div>
-              <span className="text-sm font-medium text-gray-500">
-                Temperatura
-              </span>
+              <div className="text-4xl font-bold text-gray-900">
+                {temperature}°C
+              </div>
             </div>
-            <div className="text-4xl font-bold text-gray-900 mb-1">
-              {temperature}°C
-            </div>
-          </div>
 
-          {/* Wind Speed Card */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl sm:col-span-2 lg:col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-blue-100 rounded-xl">
-                <Wind className="w-6 h-6 text-blue-600" />
+            {/* Humidity Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 bg-teal-100 rounded-xl">
+                  <Droplets className="w-6 h-6 text-teal-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-500">
+                  Humedad
+                </span>
               </div>
-              <span className="text-sm font-medium text-gray-500">
-                Velocidad del viento
-              </span>
+              <div className="text-4xl font-bold text-gray-900">
+                {humidity}%
+              </div>
             </div>
-            <div className="text-4xl font-bold text-gray-900 mb-1">
-              {windSpeed}
+
+            {/* Pressure Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-3 bg-indigo-100 rounded-xl">
+                  <Gauge className="w-6 h-6 text-indigo-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-500">
+                  Presión
+                </span>
+              </div>
+              <div className="text-4xl font-bold text-gray-900">{pressure}</div>
+              <div className="text-sm text-gray-600">hPa</div>
             </div>
-            <div className="text-sm text-gray-600">km/h</div>
           </div>
         </div>
 
