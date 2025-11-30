@@ -190,7 +190,7 @@ export function WeatherDashboard() {
             </div>
 
             {/* Temperature Card */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-3 bg-orange-100 rounded-xl">
                   <Thermometer className="w-6 h-6 text-orange-600" />
@@ -205,7 +205,7 @@ export function WeatherDashboard() {
             </div>
 
             {/* Humidity Card */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-3 bg-teal-100 rounded-xl">
                   <Droplets className="w-6 h-6 text-teal-600" />
@@ -220,7 +220,7 @@ export function WeatherDashboard() {
             </div>
 
             {/* Pressure Card */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-3 bg-indigo-100 rounded-xl">
                   <Gauge className="w-6 h-6 text-indigo-600" />
