@@ -49,8 +49,8 @@ export function WeatherDashboard() {
 
   useEffect(() => {
     fetchWeatherData();
-    // Refresh every 10 seconds
-    const interval = setInterval(fetchWeatherData, 10000);
+    // Refresh every 15 seconds
+    const interval = setInterval(fetchWeatherData, 15000);
     return () => clearInterval(interval);
   }, []);
 
@@ -128,15 +128,10 @@ export function WeatherDashboard() {
           )}
         </div>
 
-        {/* Main Layout: Carousel + Cards */}
+        {/* Main Layout: Cards + Carousel */}
         <div className="w-full max-w-7xl flex flex-col lg:flex-row gap-6">
-          {/* Takeoff Photo Carousel - Left side with 4:5 aspect ratio */}
-          <div className="lg:w-2/5">
-            <ImageCarousel />
-          </div>
-
-          {/* Weather Cards Grid - Right side, 2 columns, stretch to fill height */}
-          <div className="lg:w-3/5 grid grid-cols-2 gap-4 grid-rows-3">
+          {/* Weather Cards Grid - 2 columns, appears first on mobile */}
+          <div className="order-first lg:order-last lg:w-3/5 grid grid-cols-2 gap-4 grid-rows-3">
             {/* Wind Speed Card */}
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-5 shadow-xl flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-3">
@@ -232,6 +227,11 @@ export function WeatherDashboard() {
               <div className="text-4xl font-bold text-gray-900">{pressure}</div>
               <div className="text-sm text-gray-600">hPa</div>
             </div>
+          </div>
+
+          {/* Takeoff Photo Carousel - appears second on mobile, left on desktop */}
+          <div className="order-last lg:order-first lg:w-2/5">
+            <ImageCarousel />
           </div>
         </div>
 
