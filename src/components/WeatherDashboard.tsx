@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 import {
   Wind,
   Droplets,
@@ -9,58 +9,69 @@ import {
   Thermometer,
   CloudRain,
   RefreshCw,
-} from 'lucide-react'
-import { mphToKmh, degreesToCardinal, inHgToHpa } from '@/lib/utils'
-import { ImageCarousel } from './ImageCarousel'
+} from "lucide-react";
+import { mphToKmh, degreesToCardinal, inHgToHpa } from "@/lib/utils";
+import { ImageCarousel } from "./ImageCarousel";
 
 interface WeatherData {
-  station: string
-  timestamp: number
-  tempf?: number
-  humidity?: number
-  windspeedmph?: number
-  windgustmph?: number
-  winddir?: number
-  baromabsin?: number
+  station: string;
+  timestamp: number;
+  tempf?: number;
+  humidity?: number;
+  windspeedmph?: number;
+  windgustmph?: number;
+  winddir?: number;
+  baromabsin?: number;
 }
 
 export function WeatherDashboard() {
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
   const fetchWeatherData = async () => {
     try {
-      const response = await fetch('/api/weather')
+      const response = await fetch("/api/weather");
       if (!response.ok) {
-        throw new Error('Failed to fetch weather data')
+        throw new Error("Failed to fetch weather data");
       }
-      const data = await response.json()
-      setWeatherData(data)
-      setLastUpdate(new Date())
-      setError(null)
+      const data = await response.json();
+      setWeatherData(data);
+      setLastUpdate(new Date());
+      setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error fetching data')
+      setError(err instanceof Error ? err.message : "Error fetching data");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchWeatherData()
+    fetchWeatherData();
     // Refresh every 10 seconds
-    const interval = setInterval(fetchWeatherData, 10000)
-    return () => clearInterval(interval)
-  }, [])
+    const interval = setInterval(fetchWeatherData, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Convert values for display
-  const windSpeed = weatherData?.windspeedmph ? mphToKmh(weatherData.windspeedmph) : '--'
-  const windGusts = weatherData?.windgustmph ? mphToKmh(weatherData.windgustmph) : '--'
-  const windDirection = weatherData?.winddir !== undefined ? degreesToCardinal(weatherData.winddir) : '--'
-  const temperature = weatherData?.tempf ? Math.round((weatherData.tempf - 32) * 5 / 9 * 10) / 10 : '--'
-  const humidity = weatherData?.humidity ?? '--'
-  const pressure = weatherData?.baromabsin ? inHgToHpa(weatherData.baromabsin) : '--'
+  const windSpeed = weatherData?.windspeedmph
+    ? mphToKmh(weatherData.windspeedmph)
+    : "--";
+  const windGusts = weatherData?.windgustmph
+    ? mphToKmh(weatherData.windgustmph)
+    : "--";
+  const windDirection =
+    weatherData?.winddir !== undefined
+      ? degreesToCardinal(weatherData.winddir)
+      : "--";
+  const temperature = weatherData?.tempf
+    ? Math.round((((weatherData.tempf - 32) * 5) / 9) * 10) / 10
+    : "--";
+  const humidity = weatherData?.humidity ?? "--";
+  const pressure = weatherData?.baromabsin
+    ? inHgToHpa(weatherData.baromabsin)
+    : "--";
 
   if (loading) {
     return (
@@ -70,7 +81,7 @@ export function WeatherDashboard() {
           Cargando datos meteorológicos...
         </div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -86,7 +97,7 @@ export function WeatherDashboard() {
           </button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -96,7 +107,7 @@ export function WeatherDashboard() {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage:
-            'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)',
+            "url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)",
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
@@ -105,16 +116,11 @@ export function WeatherDashboard() {
       {/* Content */}
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
         {/* Station Header */}
-        <div className="text-center mb-8 sm:mb-12">
+        <div className="text-center mb-2">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 drop-shadow-lg">
-            {weatherData?.station || 'Estación Meteorológica Cerro ARCO'}
+            {weatherData?.station || "Estación Meteorológica Cerro ARCO"}
           </h1>
           <div className="h-1 w-24 bg-blue-400 mx-auto rounded-full" />
-          {lastUpdate && (
-            <p className="text-white/70 text-sm mt-4">
-              Última actualización: {lastUpdate.toLocaleTimeString('es-AR')}
-            </p>
-          )}
         </div>
 
         {/* Weather Metrics Grid */}
@@ -152,7 +158,9 @@ export function WeatherDashboard() {
               {windDirection}
             </div>
             <div className="text-sm text-gray-600">
-              {weatherData?.winddir !== undefined ? `${weatherData.winddir}°` : ''}
+              {weatherData?.winddir !== undefined
+                ? `${weatherData.winddir}°`
+                : ""}
             </div>
           </div>
 
@@ -230,5 +238,5 @@ export function WeatherDashboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }
