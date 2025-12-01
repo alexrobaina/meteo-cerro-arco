@@ -49,8 +49,7 @@ export function WeatherDashboard() {
 
   useEffect(() => {
     fetchWeatherData();
-    // Refresh every 15 seconds
-    const interval = setInterval(fetchWeatherData, 15000);
+    const interval = setInterval(fetchWeatherData, 60000);
     return () => clearInterval(interval);
   }, []);
 
